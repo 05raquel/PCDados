@@ -8,8 +8,8 @@ from pandas import Series, to_numeric, to_datetime
 
 
 # Define the input and output file paths
-input_file = 'amostra.csv'
-output_file = 'amostra_ids.csv'
+input_file = 'life_expectancy.csv'
+output_file = 'life_expectancy_ids.csv'
 
 # Function to add ID to each line
 def add_id_to_csv(input_file, output_file):
@@ -32,13 +32,12 @@ def add_id_to_csv(input_file, output_file):
 # Call the function to add ID to CSV
 add_id_to_csv(input_file, output_file)
 
-filename = "amostra_ids.csv"
-file_tag = "amostra"
+filename = "life_expectancy_ids.csv"
+file_tag = "life_expectancy"
 data: DataFrame = read_csv(filename, na_values="", index_col="id")
 
 print(data.shape)
 
-'''
 
 '''
 figure(figsize=(4, 2))
@@ -109,7 +108,7 @@ plot_bar_chart(
 )
 savefig(f"images/{file_tag}_variable_types.png")
 show()
-'''
+###
 
 
 ############################################# DISTRIBUTION #############################################
@@ -121,7 +120,7 @@ from pandas import DataFrame, read_csv
 file_tag = "amostra"
 data: DataFrame = read_csv("amostra_ids.csv", index_col="id", na_values="")
 summary5: DataFrame = data.describe(include="all")
-'''print(summary5)
+###print(summary5)
 
 var: str = "infant deaths"
 print(f"Summary for {var} variable:")
@@ -144,7 +143,7 @@ print("\tFreq: ", summary5[var]["freq"])
 # Top = moda
 # Freq = # que a moda aparece
 # Count = # missing values
-'''
+####
 
 
 from matplotlib.pyplot import savefig, show
@@ -239,7 +238,7 @@ def count_outliers(
 
     return {"iqr": outliers_iqr, "stdev": outliers_stdev}
 
-'''
+###
 if [] != numeric:
     outliers: dict[str, int] = count_outliers(data, numeric)
     figure(figsize=(12, HEIGHT))
@@ -273,10 +272,10 @@ if [] != numeric:
     show()
 else:
     print("There are no numeric variables.")
-'''
+###
 
 from dslabs_functions import set_chart_labels
-'''
+###
 
 if [] != numeric:
     fig, axs = subplots(
@@ -363,7 +362,7 @@ plot_bar_chart(
 savefig(f"images/{file_tag}_class_distribution.png")
 show()
 
-'''
+###
 ############################################# SPARSITY #############################################
 
 
@@ -379,7 +378,10 @@ data: DataFrame = read_csv(filename, index_col="id", na_values="")
 data = data.dropna()
 
 vars: list = data.columns.to_list()
-'''
+
+
+###
+
 if [] != vars:
     target = "stroke"
 
@@ -412,7 +414,8 @@ if [] != vars:
     show()
 else:
     print("Sparsity per class: there are no variables.")
-'''
+###
+    
 from seaborn import heatmap
 from dslabs_functions import get_variable_types
 
