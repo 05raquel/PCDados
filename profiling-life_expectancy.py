@@ -180,12 +180,12 @@ if [] != numeric:
         axs[i, j].set_title("Boxplot for %s" % numeric[n])
         axs[i, j].boxplot(data[numeric[n]].dropna().values)
         i, j = (i + 1, 0) if (n + 1) % cols == 0 else (i, j + 1)
-    savefig(f"images/{file_tag}_single_boxplots.png")
-    show()
+    #savefig(f"images/{file_tag}_single_boxplots.png")
+    #show()
 else:
     print("There are no numeric variables.")
 
-'''
+
 from pandas import Series
 from matplotlib.pyplot import figure, savefig, show
 from dslabs_functions import plot_multibar_chart
@@ -239,7 +239,7 @@ def count_outliers(
         ]
 
     return {"iqr": outliers_iqr, "stdev": outliers_stdev}
-
+'''
 ###
 if [] != numeric:
     outliers: dict[str, int] = count_outliers(data, numeric)
@@ -255,8 +255,8 @@ if [] != numeric:
     savefig(f"images/{file_tag}_outliers_standard.png")
     show()
 else:
-    print("There are no numeric variables.")
-'''
+    print("There are no numeric variables.")'''
+
 
 '''
 if [] != numeric:
@@ -274,11 +274,13 @@ if [] != numeric:
     show()
 else:
     print("There are no numeric variables.")
+'''
+
 ###
 
 from dslabs_functions import set_chart_labels
 ###
-
+'''
 if [] != numeric:
     fig, axs = subplots(
         rows, cols, figsize=(cols * HEIGHT, rows * HEIGHT), squeeze=False
@@ -296,16 +298,18 @@ if [] != numeric:
         axs[i, j].hist(data[numeric[n]].dropna().values, "auto")
         i, j = (i + 1, 0) if (n + 1) % cols == 0 else (i, j + 1)
     savefig(f"images/{file_tag}_single_histograms_numeric.png")
-    #Sshow()
+    show()
 else:
     print("There are no numeric variables.")
+'''
+
 from numpy import log
 from pandas import Series
 from scipy.stats import norm, expon, lognorm
 from matplotlib.axes import Axes
 from dslabs_functions import plot_multiline_chart
 
-
+'''
 def compute_known_distributions(x_values: list) -> dict:
     distributions = dict()
     # Gaussian
@@ -344,13 +348,13 @@ if [] != numeric:
     for n in range(len(numeric)):
         histogram_with_distributions(axs[i, j], data[numeric[n]].dropna(), numeric[n])
         i, j = (i + 1, 0) if (n + 1) % cols == 0 else (i, j + 1)
-    #savefig(f"images/{file_tag}_histogram_numeric_distribution.png")
-    #show()
+    savefig(f"images/{file_tag}_histogram_numeric_distribution.png")
+    show()
 else:
     print("There are no numeric variables.")
+'''
 
-
-target = "infant deaths"
+'''target = "Status"
 
 values: Series = data[target].value_counts()
 print(values)
@@ -362,7 +366,7 @@ plot_bar_chart(
     title=f"Target distribution (target={target})",
 )
 savefig(f"images/{file_tag}_class_distribution.png")
-show()
+show()'''
 
 ###
 ############################################# SPARSITY #############################################
@@ -374,8 +378,10 @@ from matplotlib.figure import Figure
 from matplotlib.pyplot import figure, subplots, savefig, show
 from dslabs_functions import HEIGHT, plot_multi_scatters_chart
 
-filename = "amostra_ids.csv"
-file_tag = "amostra"
+filename = "life_expectancy_ids.csv"
+file_tag = "life_expectancy"
+#filename = "amostra_ids.csv"
+#file_tag = "amostra"
 data: DataFrame = read_csv(filename, index_col="id", na_values="")
 data = data.dropna()
 
@@ -383,9 +389,9 @@ vars: list = data.columns.to_list()
 
 
 ###
-
+'''
 if [] != vars:
-    target = "stroke"
+    #target = "stroke"
 
     n: int = len(vars) - 1
     fig: Figure
@@ -403,7 +409,7 @@ else:
 '''
 '''
 if [] != vars:
-    target = "infant deaths"
+    target = "Status"
 
     n: int = len(vars) - 1
     fig, axs = subplots(n, n, figsize=(n * HEIGHT, n * HEIGHT), squeeze=False)
@@ -417,7 +423,7 @@ if [] != vars:
 else:
     print("Sparsity per class: there are no variables.")
 ###
-    
+'''
 from seaborn import heatmap
 from dslabs_functions import get_variable_types
 
@@ -437,5 +443,3 @@ heatmap(
 )
 savefig(f"images/{file_tag}_correlation_analysis.png")
 show()
-
-'''
