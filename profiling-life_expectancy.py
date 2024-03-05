@@ -36,23 +36,24 @@ filename = "life_expectancy_ids.csv"
 file_tag = "life_expectancy"
 data: DataFrame = read_csv(filename, na_values="", index_col="id")
 
-print(data.shape)
+#print(data.shape)
 
 
-'''
-figure(figsize=(4, 2))
+
+'''figure(figsize=(4, 2))
 values: dict[str, int] = {"nr records": data.shape[0], "nr variables": data.shape[1]}
 plot_bar_chart(
     list(values.keys()), list(values.values()), title="Nr of records vs nr variables"
 )
 savefig(f"images/{file_tag}_records_variables.png")
-show()
+show()'''
 
-'''
 
-'''
 
-mv: dict[str, int] = {}
+
+
+
+'''mv: dict[str, int] = {}
 for var in data.columns:
     nr: int = data[var].isna().sum()
     if nr > 0:
@@ -70,12 +71,10 @@ savefig(f"images/{file_tag}_mv.png")
 show()
 '''
 
-'''
-print(data.dtypes)
 
+#print(data.dtypes)
 
-
-def get_variable_types(df: DataFrame) -> dict[str, list]:
+'''def get_variable_types(df: DataFrame) -> dict[str, list]:
     variable_types: dict = {"numeric": [], "binary": [], "date": [], "symbolic": []}
 
     nr_values: Series = df.nunique(axis=0, dropna=True)
@@ -107,7 +106,7 @@ plot_bar_chart(
     list(counts.keys()), list(counts.values()), title="Nr of variables per type"
 )
 savefig(f"images/{file_tag}_variable_types.png")
-show()
+show()'''
 ###
 
 
@@ -115,12 +114,13 @@ show()
 
 
 from pandas import DataFrame, read_csv
+################# AQUI!
 
-
-file_tag = "amostra"
-data: DataFrame = read_csv("amostra_ids.csv", index_col="id", na_values="")
+file_tag = "life_expectancy_ids"
+data: DataFrame = read_csv("life_expectancy_ids.csv", index_col="id", na_values="")
+'''
 summary5: DataFrame = data.describe(include="all")
-###print(summary5)
+print(summary5)
 
 var: str = "infant deaths"
 print(f"Summary for {var} variable:")
@@ -145,19 +145,21 @@ print("\tFreq: ", summary5[var]["freq"])
 # Count = # missing values
 ####
 
-
+'''
 from matplotlib.pyplot import savefig, show
 from dslabs_functions import get_variable_types
 
 variables_types: dict[str, list] = get_variable_types(data)
 numeric: list[str] = variables_types["numeric"]
+
+'''
 if [] != numeric:
     data[numeric].boxplot(rot=45)
     savefig(f"images/{file_tag}_global_boxplot.png")
     show()
 else:
     print("There are no numeric variables.")
-
+'''
 
 from numpy import ndarray
 from matplotlib.figure import Figure
@@ -183,7 +185,7 @@ if [] != numeric:
 else:
     print("There are no numeric variables.")
 
-
+'''
 from pandas import Series
 from matplotlib.pyplot import figure, savefig, show
 from dslabs_functions import plot_multibar_chart
