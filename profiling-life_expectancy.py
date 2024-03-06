@@ -118,9 +118,15 @@ from pandas import DataFrame, read_csv
 
 file_tag = "life_expectancy_ids"
 data: DataFrame = read_csv("life_expectancy_ids.csv", index_col="id", na_values="")
-'''
+
 summary5: DataFrame = data.describe(include="all")
 print(summary5)
+
+#data2 = read_csv("life_expectancy_ids.csv", index_col="id", na_values="")
+
+#summary5 = data2.describe(include="all")
+#summary5.to_csv(f"{file_tag}_summary.csv")
+
 
 var: str = "infant deaths"
 print(f"Summary for {var} variable:")
@@ -133,7 +139,7 @@ print("\tMedian: ", summary5[var]["50%"])
 print("\tQ3: ", summary5[var]["75%"])
 print("\tMax: ", summary5[var]["max"])
 
-var = "Alcohol"
+var = "Status"
 print(f"Summary for {var} variable:")
 print("\tCount: ", summary5[var]["count"])
 print("\tUnique: ", summary5[var]["unique"])
@@ -145,21 +151,20 @@ print("\tFreq: ", summary5[var]["freq"])
 # Count = # missing values
 ####
 
-'''
 from matplotlib.pyplot import savefig, show
 from dslabs_functions import get_variable_types
 
 variables_types: dict[str, list] = get_variable_types(data)
 numeric: list[str] = variables_types["numeric"]
 
-'''
+
 if [] != numeric:
     data[numeric].boxplot(rot=45)
     savefig(f"images/{file_tag}_global_boxplot.png")
     show()
 else:
     print("There are no numeric variables.")
-'''
+
 
 from numpy import ndarray
 from matplotlib.figure import Figure
@@ -239,8 +244,9 @@ def count_outliers(
         ]
 
     return {"iqr": outliers_iqr, "stdev": outliers_stdev}
-'''
+
 ###
+'''
 if [] != numeric:
     outliers: dict[str, int] = count_outliers(data, numeric)
     figure(figsize=(12, HEIGHT))
@@ -301,7 +307,7 @@ if [] != numeric:
     show()
 else:
     print("There are no numeric variables.")
-'''
+
 
 from numpy import log
 from pandas import Series
@@ -309,7 +315,7 @@ from scipy.stats import norm, expon, lognorm
 from matplotlib.axes import Axes
 from dslabs_functions import plot_multiline_chart
 
-'''
+
 def compute_known_distributions(x_values: list) -> dict:
     distributions = dict()
     # Gaussian
@@ -354,6 +360,32 @@ else:
     print("There are no numeric variables.")
 '''
 
+from dslabs_functions import plot_bar_chart
+
+symbolic: list[str] = variables_types["symbolic"] + variables_types["binary"]
+if [] != symbolic:
+    rows, cols = define_grid(len(symbolic))
+    fig, axs = subplots(
+        rows, cols, figsize=(cols * HEIGHT, rows * HEIGHT), squeeze=False
+    )
+    i, j = 0, 0
+    for n in range(len(symbolic)):
+        counts: Series = data[symbolic[n]].value_counts()
+        plot_bar_chart(
+            counts.index.to_list(),
+            counts.to_list(),
+            ax=axs[i, j],
+            title="Histogram for %s" % symbolic[n],
+            xlabel=symbolic[n],
+            ylabel="nr records",
+            percentage=False,
+        )
+        i, j = (i + 1, 0) if (n + 1) % cols == 0 else (i, j + 1)
+    savefig(f"images/{file_tag}_histograms_symbolic.png")
+    show()
+else:
+    print("There are no symbolic variables.")
+
 '''target = "Status"
 
 values: Series = data[target].value_counts()
@@ -366,11 +398,13 @@ plot_bar_chart(
     title=f"Target distribution (target={target})",
 )
 savefig(f"images/{file_tag}_class_distribution.png")
-show()'''
+show()
+
+'''
 
 ###
 ############################################# SPARSITY #############################################
-
+'''
 
 from numpy import ndarray
 from pandas import read_csv, DataFrame
@@ -389,7 +423,6 @@ vars: list = data.columns.to_list()
 
 
 ###
-'''
 if [] != vars:
     #target = "stroke"
 
@@ -407,6 +440,7 @@ if [] != vars:
 else:
     print("Sparsity class: there are no variables.")
 '''
+
 '''
 if [] != vars:
     target = "Status"
@@ -423,7 +457,7 @@ if [] != vars:
 else:
     print("Sparsity per class: there are no variables.")
 ###
-'''
+
 from seaborn import heatmap
 from dslabs_functions import get_variable_types
 
@@ -443,3 +477,4 @@ heatmap(
 )
 savefig(f"images/{file_tag}_correlation_analysis.png")
 show()
+'''
