@@ -216,15 +216,15 @@ df_zscore.to_csv(f"data/{file}_scaled_zscore.csv", index="id")
 
 from sklearn.preprocessing import MinMaxScaler
 
-'''transf: MinMaxScaler = MinMaxScaler(feature_range=(0, 1), copy=True).fit(data)
+transf: MinMaxScaler = MinMaxScaler(feature_range=(0, 1), copy=True).fit(data)
 df_minmax = DataFrame(transf.transform(data), index=data.index)
 df_minmax[target] = target_data
 df_minmax.columns = vars
 df_minmax.to_csv(f"data/{file}_scaled_minmax.csv", index="id")
-'''
+
 from matplotlib.pyplot import subplots, show
 from matplotlib.pyplot import figure, savefig, show
-'''
+
 file_tag = "life_expectancy"
 fig, axs = subplots(1, 3, figsize=(20, 10), squeeze=False)
 axs[0, 1].set_title("Original data")

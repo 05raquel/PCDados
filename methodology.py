@@ -13,23 +13,28 @@ def evaluate_approach(
     tstX: ndarray = test.values
     eval: dict[str, list] = {}
 
-    eval_NB: dict[str, float] = run_NB(trnX, trnY, tstX, tstY, metric=metric)
+    #eval_NB: dict[str, float] = run_NB(trnX, trnY, tstX, tstY, metric=metric)
     eval_KNN: dict[str, float] = run_KNN(trnX, trnY, tstX, tstY, metric=metric)
-    if eval_NB != {} and eval_KNN != {}:
+    #if eval_NB != {} and eval_KNN != {}:
+    #    for met in CLASS_EVAL_METRICS:
+    #        eval[met] = [eval_NB[met], eval_KNN[met]]
+
+    if eval_KNN != {}:
         for met in CLASS_EVAL_METRICS:
-            eval[met] = [eval_NB[met], eval_KNN[met]]
+            eval[met] = [ eval_KNN[met]]
     return eval
 
 
 target = "Status"
-file_tag = "life_expectancy_ids_remove"
-train: DataFrame = read_csv("data/life_expectancy_ids_mv_remove_train.csv")
-test: DataFrame = read_csv("data/life_expectancy_ids_mv_remove_test.csv")
+file_tag = "life_expectancy_ids_zscore"
+train: DataFrame = read_csv("data/life_expectancy_ids_df_zscore_train.csv")
+test: DataFrame = read_csv("data/life_expectancy_ids_df_zscore_test.csv")
 
 figure()
 eval: dict[str, list] = evaluate_approach(train, test, target=target, metric="recall")
 plot_multibar_chart(
-    ["NB", "KNN"], eval, title=f"{file_tag} evaluation", percentage=True
+    ["KNN"], eval, title=f"{file_tag} evaluation", percentage=True
+    #["NB", "KNN"], eval, title=f"{file_tag} evaluation", percentage=True
 )
 savefig(f"images/{file_tag}_eval.png")
 show()

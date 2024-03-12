@@ -1,9 +1,16 @@
 from pandas import read_csv, DataFrame
 from matplotlib.pyplot import figure, show
 from dslabs_functions import plot_bar_chart
+import pandas
 
 
-filename = "life_expectancy_ids.csv"
+df = pandas.read_csv('life_expectancy_ids.csv')
+
+# Replace 'Developing' with 0 and 'Developed' with 1 in the 'Status' column
+df['Status'] = df['Status'].replace({'Developing': 0, 'Developed': 1})
+df.to_csv('life_expectancy_ids_copy.csv', index=False)
+
+filename = "life_expectancy_ids_copy.csv"
 data: DataFrame = read_csv(filename, index_col="id", na_values="")
 #print(f"Dataset nr records={data.shape[0]}", f"nr variables={data.shape[1]}")
 
@@ -24,14 +31,14 @@ plot_bar_chart(
 )
 show()
 
-
+'''
 # apagado quando pelo menos 1 variavel tem NA
 df_remove: DataFrame = data.dropna(how="any", inplace=False)
 print("\nV1")
 print(df_remove.shape)
 
 
-'''
+
 # apagado quando todas os valores das variaveis da linha sao NA
 df_v2: DataFrame = data.dropna(how="all", inplace=False)
 print("\nV2")
@@ -41,7 +48,7 @@ print(df_v2.shape)
 df_v3: DataFrame = data.dropna(axis=1, how="any", inplace=False)
 print("\nV3")
 print(df_v3.shape)
-
+'''
 ## Vamos usar df_v1 ##
 
 def mvi_by_dropping(
@@ -57,14 +64,17 @@ def mvi_by_dropping(
     return df
 
 
-df: DataFrame = mvi_by_dropping(data, min_pct_per_var=0.75, min_pct_per_rec=1)
+df_remove_col: DataFrame = mvi_by_dropping(data, min_pct_per_var=0.9, min_pct_per_rec=0)
+df_remove: DataFrame = df_remove_col.dropna(how="any", inplace=False)
 print("\nV4")
-print(df.shape)
+print(df_remove.shape)
+
+df_remove.to_csv(f"remove_col_lin_dataset.csv", index=True)
 
 mv1: dict[str, int] = {}
 figure()
-for var in df:
-    nr: int = df[var].isna().sum()
+for var in df_remove:
+    nr: int = df_remove[var].isna().sum()
     if nr > 0:
         mv1[var] = nr
 
@@ -76,9 +86,9 @@ plot_bar_chart(
     ylabel="nr missing values",
 )
 show()
-'''
 
-### Abordagem de preencher missing values
+
+'''### Abordagem de preencher missing values
 
 from numpy import ndarray
 from pandas import concat
@@ -128,25 +138,25 @@ def mvi_by_filling(data: DataFrame, strategy: str = "frequent") -> DataFrame:
     return df
 
 
-df_fill: DataFrame = mvi_by_filling(data, strategy="frequent")
-print(df_fill.head(10))
+df_remove_col_fil: DataFrame = mvi_by_filling(df_remove_col, strategy="frequent")
+#print(df_fill.head(10))
 
+'''
 
-
-data = df_fill
+data = df_remove
 
 from numpy import array, ndarray
 from pandas import read_csv, DataFrame
 
-file_tag = "life_expectancy_ids_mv_fill"
+file_tag = "life_expectancy_ids_mv_remove_col_lin"
 index_col = "id"
 target = "Status"
 labels: list = list(data[target].unique())
 labels.sort()
 print(f"Labels={labels}")
 
-positive: int = "Developed"
-negative: int = "Developing"
+positive: int = 1 #Developed
+negative: int = 0 #Developing
 values: dict[str, list[int]] = {
     "Original": [
         len(data[data[target] == negative]),
@@ -158,6 +168,7 @@ y: array = data.pop(target).to_list()
 X: ndarray = data.values
 
 print(values)
+
 
 
 from pandas import concat
