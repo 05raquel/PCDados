@@ -9,7 +9,7 @@ original: DataFrame = read_csv(f"data/{file}.csv", sep=",", decimal=".")
 target_count: Series = original[target].value_counts()
 positive_class = target_count.idxmin()
 negative_class = target_count.idxmax()
-'''
+''' 1 ) 
 print("Minority class=", positive_class, ":", target_count[positive_class])
 print("Majority class=", negative_class, ":", target_count[negative_class])
 print(
@@ -28,9 +28,11 @@ plot_bar_chart(
 show()'''
 
 
-'''df_positives: Series = original[original[target] == positive_class]
+
+df_positives: Series = original[original[target] == positive_class]
 df_negatives: Series = original[original[target] == negative_class]
 
+''' 2) UNDERsampling
 df_neg_sample: DataFrame = DataFrame(df_negatives.sample(len(df_positives)))
 df_under: DataFrame = concat([df_positives, df_neg_sample], axis=0)
 df_under.to_csv(f"data/{file}_under.csv", index=False)
@@ -39,6 +41,20 @@ print("Minority class=", positive_class, ":", len(df_positives))
 print("Majority class=", negative_class, ":", len(df_neg_sample))
 print("Proportion:", round(len(df_positives) / len(df_neg_sample), 2), ": 1")
 '''
+
+# OVERsampling
+''' 
+df_pos_sample: DataFrame = DataFrame(
+    df_positives.sample(len(df_negatives), replace=True)
+)
+df_over: DataFrame = concat([df_pos_sample, df_negatives], axis=0)
+df_over.to_csv(f"data/{file}_over.csv", index=False)
+
+print("Minority class=", positive_class, ":", len(df_pos_sample))
+print("Majority class=", negative_class, ":", len(df_negatives))
+print("Proportion:", round(len(df_pos_sample) / len(df_negatives), 2), ": 1")
+'''
+
 from pandas import read_csv
 from numpy import array, ndarray
 from pandas import read_csv, DataFrame
@@ -48,6 +64,7 @@ from matplotlib.pyplot import savefig, show, figure
 from dslabs_functions import plot_multibar_chart, CLASS_EVAL_METRICS, run_NB, run_KNN
 
 
+''' AVALIACAO  balancing
 def evaluate_approach(
     train: DataFrame, test: DataFrame, target: str = "class", metric: str = "accuracy"
 ) -> dict[str, list]:
@@ -76,4 +93,4 @@ plot_multibar_chart(
     ["NB", "KNN"], eval, title=f"{file_tag} evaluation", percentage=True
 )
 savefig(f"images/{file_tag}_eval.png")
-show()
+show()'''
