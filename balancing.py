@@ -9,7 +9,7 @@ original: DataFrame = read_csv(f"data/{file}.csv", sep=",", decimal=".")
 target_count: Series = original[target].value_counts()
 positive_class = target_count.idxmin()
 negative_class = target_count.idxmax()
-''' 1 ) 
+#1 ) 
 print("Minority class=", positive_class, ":", target_count[positive_class])
 print("Majority class=", negative_class, ":", target_count[negative_class])
 print(
@@ -25,14 +25,14 @@ figure()
 plot_bar_chart(
     target_count.index.to_list(), target_count.to_list(), title="Class balance"
 )
-show()'''
+show()
 
 
 
 df_positives: Series = original[original[target] == positive_class]
 df_negatives: Series = original[original[target] == negative_class]
 
-''' 2) UNDERsampling
+'''# 2) UNDERsampling
 df_neg_sample: DataFrame = DataFrame(df_negatives.sample(len(df_positives)))
 df_under: DataFrame = concat([df_positives, df_neg_sample], axis=0)
 df_under.to_csv(f"data/{file}_under.csv", index=False)
@@ -43,7 +43,7 @@ print("Proportion:", round(len(df_positives) / len(df_neg_sample), 2), ": 1")
 '''
 
 # OVERsampling
-''' 
+
 df_pos_sample: DataFrame = DataFrame(
     df_positives.sample(len(df_negatives), replace=True)
 )
@@ -53,7 +53,7 @@ df_over.to_csv(f"data/{file}_over.csv", index=False)
 print("Minority class=", positive_class, ":", len(df_pos_sample))
 print("Majority class=", negative_class, ":", len(df_negatives))
 print("Proportion:", round(len(df_pos_sample) / len(df_negatives), 2), ": 1")
-'''
+
 
 from pandas import read_csv
 from numpy import array, ndarray

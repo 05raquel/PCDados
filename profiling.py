@@ -6,7 +6,7 @@ from pandas import Series, to_numeric, to_datetime
 
 ############################################# DIMENSIONALITY #############################################
 
-
+'''
 # Define the input and output file paths
 input_file = 'amostra.csv'
 output_file = 'amostra_ids.csv'
@@ -298,6 +298,7 @@ if [] != numeric:
     #Sshow()
 else:
     print("There are no numeric variables.")
+
 from numpy import log
 from pandas import Series
 from scipy.stats import norm, expon, lognorm
@@ -376,6 +377,8 @@ from dslabs_functions import HEIGHT, plot_multi_scatters_chart
 filename = "amostra_ids.csv"
 file_tag = "amostra"
 data: DataFrame = read_csv(filename, index_col="id", na_values="")
+data['Status'] = data['Status'].replace({'Developing': 0, 'Developed': 1})
+
 data = data.dropna()
 
 vars: list = data.columns.to_list()
@@ -418,7 +421,13 @@ from dslabs_functions import get_variable_types
 
 variables_types: dict[str, list] = get_variable_types(data)
 numeric: list[str] = variables_types["numeric"]
+print(numeric)
+numeric.append('Status')
+print(numeric)
+#corr_mtx: DataFrame = data[numeric].corr().abs()
 corr_mtx: DataFrame = data[numeric].corr().abs()
+corr_mtx.to_csv("correlation_matrix.csv", index=False)
+print(corr_mtx)
 
 figure()
 heatmap(
@@ -430,7 +439,6 @@ heatmap(
     vmin=0,
     vmax=1,
 )
-savefig(f"images/{file_tag}_correlation_analysis.png")
+#savefig(f"images/{file_tag}_correlation_analysis.png")
 show()
 
-'''
