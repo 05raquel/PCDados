@@ -35,8 +35,8 @@ def knn_study(
 
     return best_model, best_params
 
-file_tag = 'life_expectancy_ids_df_zscore_51'
-train_filename = 'data/life_expectancy_ids_df_zscore_train.csv'
+file_tag = 'life_expectancy_ids_df_zscore_over_51'
+train_filename = 'data/life_expectancy_ids_df_zscore_train_over.csv'
 test_filename = 'data/life_expectancy_ids_df_zscore_test.csv'
 target = 'Status'
 eval_metric = 'f1'
@@ -47,14 +47,14 @@ print(f'Labels={labels}')
 
 figure()
 best_model, params = knn_study(trnX, trnY, tstX, tstY, k_max=51, metric=eval_metric)
-savefig(f'images/{file_tag}_knn_{eval_metric}_study.png')
+#savefig(f'images/{file_tag}_knn_{eval_metric}_study.png')
 show()
 
 prd_trn: array = best_model.predict(trnX)
 prd_tst: array = best_model.predict(tstX)
 figure()
 plot_evaluation_results(params, trnY, prd_trn, tstY, prd_tst, labels)
-savefig(f'images/{file_tag}_knn_{params["name"]}_best_{params["metric"]}_eval.png')
+#savefig(f'images/{file_tag}_knn_{params["name"]}_best_{params["metric"]}_eval.png')
 show()
 
 from matplotlib.pyplot import figure, savefig
@@ -82,5 +82,5 @@ plot_multiline_chart(
     ylabel=str(eval_metric),
     percentage=True,
 )
-savefig(f"images/{file_tag}_knn_overfitting.png")
+#savefig(f"images/{file_tag}_knn_overfitting.png")
 show()
